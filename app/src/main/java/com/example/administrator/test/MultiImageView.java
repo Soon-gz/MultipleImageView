@@ -3,6 +3,7 @@ package com.example.administrator.test;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -50,13 +51,19 @@ public class MultiImageView extends LinearLayout {
 
     public MultiImageView(Context context) {
         super(context);
+        Log.i("tag00","MultiImageView(Context context)");
+
     }
 
     public MultiImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Log.i("tag00","MultiImageView(Context context, AttributeSet attrs)");
+
     }
 
     public void setList(List<String> lists) throws IllegalArgumentException {
+        Log.i("tag00","setList(List<String> lists)" + lists.size());
+
         if (lists == null) {
             throw new IllegalArgumentException("imageList is null...");
         }
@@ -73,6 +80,7 @@ public class MultiImageView extends LinearLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.i("tag00","onMeasure() widthMeasureSpec:"+widthMeasureSpec+"    heightMeasureSpec:"+heightMeasureSpec);
         if (MAX_WIDTH == 0) {
             int width = measureWidth(widthMeasureSpec);
             if (width > 0) {
@@ -127,11 +135,16 @@ public class MultiImageView extends LinearLayout {
 
     // 根据imageView的数量初始化不同的View布局,还要为每一个View作点击效果
     private void initView() {
+        Log.i("tag00","initView()");
+
         this.setOrientation(VERTICAL);
         this.removeAllViews();
         if (MAX_WIDTH == 0) {
             //为了触发onMeasure()来测量MultiImageView的最大宽度，MultiImageView的宽设置为match_parent
-            addView(new View(getContext()));
+//            addView(new View(getContext()));
+
+            measure(1073742808,0);
+
             return;
         }
 
@@ -142,6 +155,8 @@ public class MultiImageView extends LinearLayout {
         if (imagesList.size() == 1) {
             addView(createImageView(0, false));
         } else {
+            Log.i("tag00","initView else");
+
             int allCount = imagesList.size() > 9 ? 9 : imagesList.size();//最多展示九张图片
             if (allCount == 4) {
                 MAX_PER_ROW_COUNT = 2;
@@ -175,6 +190,7 @@ public class MultiImageView extends LinearLayout {
     }
 
     private View createImageView(int position, final boolean isMultiImage) {
+
         String url = imagesList.get(position);
         ImageView imageView = new ColorFilterImageView(getContext());
         if (isMultiImage) {
